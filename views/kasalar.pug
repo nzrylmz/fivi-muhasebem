@@ -1,7 +1,7 @@
 extends layout
 block content
 
-    
+    include helpers/formatPara
 
     .row.mt-4
         .col-md-12
@@ -19,5 +19,6 @@ block content
                                 tr
                                     td=index+1
                                     th= kasa.kasaAdi
-                                    th 500
+                                    - const miktar = kasa.gelir - kasa.gider;
+                                    th ₺!{miktar.toLocaleString('tr', {style:"currency", currency:"try"}).replace('TRY', '')}
                                     

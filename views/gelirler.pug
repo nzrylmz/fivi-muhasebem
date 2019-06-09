@@ -10,30 +10,40 @@ block content
             })
             .catch(err => window.alert("Hata ;\n"+JSON.stringify(err)));
         }
+        $(document).ready( function () {
+            $('#gelirTablo').DataTable({
+                //searching: false,
+                //ordering: false,
+            });
+        } );
 
     .row.mt-4
         .col-md-12
             .card(style="max-height: 100%; overflow-y: auto;")
                 .card-body
-                    table.table
+                    table(id="gelirTablo").table.row-border.hover.stripe.cell-border
                         h3 Gelirlerim
                         thead
                             tr
-                                th(scope='col', style="width: 30px;")
-                                th(scope='col', style="width: 30%;") Miktar
-                                th(scope='col', style="width: 30%;") Kasa
+                                th(scope='col', style="width: 20px;")
+                                th(scope='col') Miktar
+                                th(scope='col') Kasa
                                 th(scope='col') Tarih
-                                th(scope='col') Sil
+                                th(scope='col', style="width: 50px;") Sil
                         tbody
                             each gelir, index in gelirler
                                 tr
                                     - const aylar = [ "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık" ]
-                                    - const tarih = (gelir.tarih.getDate() < 10 ? (0+""+gelir.tarih.getDate()) : gelir.tarih.getDate())+" "+aylar[gelir.tarih.getMonth()]+" "+gelir.tarih.getFullYear()
-                                    td=index
-                                    th #{gelir.miktar} ₺
+                                    - const tarih = gelir.tarih.getDate()+" "+aylar[gelir.tarih.getMonth()]+" "+gelir.tarih.getFullYear()
+                                    td(style="text-align:center;")=index+1
+
+                                    th ₺!{gelir.miktar.toLocaleString('tr', {style:"currency", currency:"try"}).replace('TRY', '')}
+
                                     td=gelir.kasaAdi
+
                                     td=tarih
+
                                     td
-                                        button.btn.btn-danger(onclick='gelirSil(event, "'+ gelir.ID +'")')
+                                        button.btn.btn-danger(style="width:100%;", onclick='gelirSil(event, "'+ gelir.ID +'")')
                                             | Sil
     include helpers/ekleGelir

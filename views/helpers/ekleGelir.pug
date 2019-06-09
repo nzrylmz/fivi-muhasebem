@@ -9,6 +9,9 @@ script(type="text/javascript").
         }).catch(err => console.error(err));
         console.log("çalıştı!")
     }
+    const format = (e) => {
+        e.target.value = parseFloat(e.target.value);
+    }
 
 .row.mt-4
     .col-md-12
@@ -17,7 +20,7 @@ script(type="text/javascript").
                 form(onsubmit="return gelirEkle(event)")
                     .form-group
                         label(for='exampleFormControlInput1') Gelir Miktarı
-                        input#exampleFormControlInput1.form-control(type='number', name="miktar" placeholder='0 ₺')
+                        input#exampleFormControlInput1.form-control(type='text', name="miktar" placeholder='0 ₺' onchange="format(event)")
                     .form-group
                         label(for='exampleFormControlSelect1') Kasa
                         select(name="kasa")#exampleFormControlSelect1.form-control

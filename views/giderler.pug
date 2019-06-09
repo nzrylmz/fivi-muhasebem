@@ -10,30 +10,37 @@ block content
             })
             .catch(err => window.alert("Hata ;\n"+JSON.stringify(err)));
         }
+        $(document).ready( function () {
+            $('#giderTablo').DataTable({ "sSortDataType": "dom-text", "sType": "numeric"});
+        } );
 
     .row.mt-4
         .col-md-12
             .card(style="max-height: 100%; overflow-y: auto;")
                 .card-body
-                    table.table
+                    table(id="giderTablo").table.row-border.hover.stripe.cell-border
                         h3 Giderlerim
                         thead
                             tr
-                                th(scope='col', style="width: 30px;")
-                                th(scope='col', style="width: 30%;") Miktar
-                                th(scope='col', style="width: 30%;") Kasa
+                                th(scope='col', style="width: 20px;")
+                                th(scope='col') Miktar
+                                th(scope='col') Kasa
                                 th(scope='col') Tarih
-                                th(scope='col') Sil
+                                th(scope='col', style="width: 50px;") Sil
                         tbody
                             each gider, index in giderler
                                 tr
                                     - const aylar = [ "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık" ]
-                                    - const tarih = (gider.tarih.getDate() < 10 ? (0+""+gider.tarih.getDate()) : gider.tarih.getDate())+" "+aylar[gider.tarih.getMonth()]+" "+gider.tarih.getFullYear()
-                                    td=index
-                                    th #{gider.miktar} ₺
+                                    - const tarih = gider.tarih.getDate()+" "+aylar[gider.tarih.getMonth()]+" "+gider.tarih.getFullYear()
+                                    td(style="text-align:center;")=index+1
+
+                                    th ₺!{gider.miktar.toLocaleString('tr', {style:"currency", currency:"try"}).replace('TRY', '')}
+
                                     td=gider.kasaAdi
+
                                     td=tarih
+
                                     td
-                                        button.btn.btn-danger(onclick='giderSil(event, "'+ gider.ID +'")')
+                                        button.btn.btn-danger(style="width:100%;", onclick='giderSil(event, "'+ gider.ID +'")')
                                             | Sil
     include helpers/ekleGider.pug

@@ -1,0 +1,10 @@
+-
+    global.formatPara = (miktar) => {
+        const formatlandi = new Intl.NumberFormat('tr-TR', {
+            style: "currency",
+            currency: "TRY",
+            minimunFractionDigits: 2
+        })
+
+        return formatlandi.format(miktar);
+    }

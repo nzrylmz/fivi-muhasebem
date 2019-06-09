@@ -56,7 +56,7 @@ app.get('/', (req, res) => { // anasayfa genel durum
 app.get('/gelirler', async(req,res) => {
 
     const connection = mysql.createConnection(global.dbConnection);
-    const gelirler = await database.runQuery(connection, 'SELECT gelirler.*,kasalar.kasaAdi FROM gelirler JOIN kasalar ON kasalar.ID = gelirler.kasaID', []);
+    const gelirler = await database.runQuery(connection, 'SELECT gelirler.*,kasalar.kasaAdi FROM gelirler JOIN kasalar ON kasalar.ID = gelirler.kasaID ORDER BY gelirler.tarih DESC', []);
     const kasalar = await database.runQuery(connection, 'SELECT * FROM kasalar', []);
     res.render('gelirler', {title: "Gelirler - Muhasebem", gelirler,kasalar});
 
@@ -65,7 +65,7 @@ app.get('/gelirler', async(req,res) => {
 app.get('/giderler', async(req,res) => {
 
     const connection = mysql.createConnection(global.dbConnection);
-    const giderler = await database.runQuery(connection, 'SELECT giderler.*,kasalar.kasaAdi FROM giderler JOIN kasalar ON kasalar.ID = giderler.kasaID', []);
+    const giderler = await database.runQuery(connection, 'SELECT giderler.*,kasalar.kasaAdi FROM giderler JOIN kasalar ON kasalar.ID = giderler.kasaID ORDER BY giderler.tarih DESC', []);
     const kasalar = await database.runQuery(connection, 'SELECT * FROM kasalar', []);
     connection.end();
     res.render('giderler', {title: "Giderler - Muhasebem", giderler,kasalar});
@@ -129,8 +129,11 @@ app.post('/gider-sil', async(req,res) => {
 app.get('/kasalar', async(req, res) => {
 
     const connection = mysql.createConnection(global.dbConnection);
-    const kasalar = await database.runQuery(connection, 'SELECT * FROM kasalar', []).catch(err => res.json(err));
+    const nakitKasa = await database.runQuery(connection, 'SELECT (SELECT kasaAdi FROM kasalar WHERE ID = ?) kasaAdi, (SELECT sum(miktar) FROM gelirler WHERE kasaID = ?) gelir, (SELECT sum(miktar) FROM giderler WHERE kasaID = ?) gider', [1,1,1]).catch(err => res.json(err));
+    const bankaKasa = await database.runQuery(connection, 'SELECT (SELECT kasaAdi FROM kasalar WHERE ID = ?) kasaAdi, (SELECT sum(miktar) FROM gelirler WHERE kasaID = ?) gelir, (SELECT sum(miktar) FROM giderler WHERE kasaID = ?) gider', [2,2,2]).catch(err => res.json(err));
     connection.end();
+
+    const kasalar = [nakitKasa[0], bankaKasa[0]];
     res.render('kasalar', {kasalar});
 
 });
