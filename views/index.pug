@@ -1,0 +1,27 @@
+extends layout
+block content
+    .row
+        .col-md-3.mt-4
+            .card
+                .card-body
+                    | Toplam Gelirim:
+                    br
+                    b #{ gelir } ₺
+        .col-md-3.mt-4
+            .card
+                .card-body
+                    | Toplam Giderim:
+                    br
+                    b #{ gider } ₺
+        .col-md-3.mt-4
+            .card
+                .card-body
+                    | Nakit Kasa Durumum:
+                    br
+                    b #{ nakitDurum } ₺
+        .col-md-3.mt-4
+            .card
+                .card-body
+                    | Banka Hesap Durumum:
+                    br
+                    b #{ bankaDurum } ₺

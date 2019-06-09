@@ -1,0 +1,23 @@
+extends layout
+block content
+
+    
+
+    .row.mt-4
+        .col-md-12
+            .card
+                .card-body
+                    table.table
+                        h3 Kasalarım
+                        thead
+                            tr
+                                th(scope='col', style="width: 10%;")
+                                th(scope='col', style="width: 70%;") Kasa Adı
+                                th(scope='col', style="width: 20%;") Miktar
+                        tbody
+                            each kasa, index in kasalar
+                                tr
+                                    td=index+1
+                                    th= kasa.kasaAdi
+                                    th 500
+                                    

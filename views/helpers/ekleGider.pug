@@ -1,0 +1,26 @@
+script(type="text/javascript").
+        const giderEkle = (e) => {
+            e.preventDefault()
+            $.post('/gider-ekle', { 
+                miktar: e.target.miktar.value,
+                kasaID: e.target.kasa.value
+            }).then(res => {
+                window.open('/giderler', '_self');
+            }).catch(err => console.error(err));
+            console.log("çalıştı!")
+        }
+
+.row.mt-4
+    .col-md-12
+        .card
+            .card-body
+                form(onsubmit="return giderEkle(event)")
+                    .form-group
+                        label(for='exampleFormControlInput1') Gider Miktarı
+                        input#exampleFormControlInput1.form-control(type='number', name="miktar" placeholder='0 ₺')
+                    .form-group
+                        label(for='exampleFormControlSelect1') Kasa
+                        select(name="kasa")#exampleFormControlSelect1.form-control
+                            each kasa in kasalar
+                                option(value=kasa.ID)=kasa.kasaAdi
+                    button(class="btn btn-danger") Ekle
